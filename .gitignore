@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build output
+frontend/dist/
+backend/dist/
+
+# Environment variables
+frontend/.env
+backend/.env
+
+# Logs
+*.log
+logs/
+frontend/logs/
+backend/logs/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# IDE/editor-specific files
+.vscode/
+.idea/
+
+# Dependency lock files (optional, if you want to ignore them)
+frontend/package-lock.json
+backend/package-lock.json
+
+# Debugger files
+*.swp
+*.swo
+
+# Generated files
+frontend/assets/
+backend/uploads/
