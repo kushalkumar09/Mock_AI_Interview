@@ -1,17 +1,27 @@
 import { InputFormDetails } from "@/constants/InputConstants";
 import { usePromptResponse } from "@/hooks/ApiHooks/usePromptResponse.jsx";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MockDetails = () => {
   const [promptData, setPromptData] = useState({
     JobPosition: "",
     JobDescription: "",
     YearOfExperience: 0,
-  }); 
-  
-  const { response, loading, fetchData, error } = usePromptResponse();
-  const [mockInterview,setMockInterview] = useState(response);
+  });
 
+  const { response, loading, fetchData, error } = usePromptResponse();
+  const [mockInterview, setMockInterview] = useState([]);
+  
+  console.log(response[0]);
+  useEffect(() => {
+
+    if (response) {
+        console.table("Response Data:", response);
+        setMockInterview(response);
+      }
+  }, [response]);
+
+  console.log(mockInterview);
   const handleButton = (e) => {
     e.preventDefault();
     console.log(promptData);
@@ -27,7 +37,6 @@ const MockDetails = () => {
     }));
   };
 
-  console.log(typeof(response))
   return (
     <div className="max-w-xl mx-auto p-4 bg-white rounded-lg shadow-md">
       <form className="space-y-4">
@@ -63,16 +72,15 @@ const MockDetails = () => {
       </form>
 
       {error && <p className="mt-4 text-red-500">{error}</p>}
-      {response && (
-  <div className="mt-4 text-green-500">
-    {response?.interviewQuestions.map((ques, idx) => (
-      <div key={idx}>
-        <h2>{ques.question}</h2>
-      </div>
-    ))}
-  </div>
-)}
-
+      {mockInterview?.length > 0 && (
+        <div className="mt-4 text-green-500">
+          {mockInterview?.map((ques, idx) => (
+            <div key={idx}>
+              <h2>{ques.question}</h2>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

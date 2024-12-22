@@ -4,7 +4,8 @@ import express from "express";
 import cors from "cors";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { getResponse } from "./controllers/AiModel/getModelResponse.js";
+import router from "./routes/route.js";
+import connectDB from "./database/db.js";
 
 const app = express();
 
@@ -21,8 +22,8 @@ app.use(
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 export const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-app.post("/res", getResponse);
-
+app.use("/api", router);
+connectDB();
 app.listen(3000, () =>
   console.log(`server is running at http://localhost:3000`)
 );
