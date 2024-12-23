@@ -1,6 +1,7 @@
 import { InputFormDetails } from "@/constants/InputConstants";
 import { usePromptResponse } from "@/hooks/ApiHooks/usePromptResponse.jsx";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 const MockDetails = () => {
   const [promptData, setPromptData] = useState({
@@ -9,10 +10,11 @@ const MockDetails = () => {
     YearOfExperience: 0,
   });
 
-  const { response, loading, fetchData, error } = usePromptResponse();
+  const { response, loading, fetchData, error ,mockId} = usePromptResponse();
   const [mockInterview, setMockInterview] = useState([]);
+
+  const navigate = useNavigate();
   
-  console.log(response[0]);
   useEffect(() => {
 
     if (response) {
@@ -21,7 +23,7 @@ const MockDetails = () => {
       }
   }, [response]);
 
-  console.log(mockInterview);
+
   const handleButton = (e) => {
     e.preventDefault();
     console.log(promptData);
@@ -37,6 +39,10 @@ const MockDetails = () => {
     }));
   };
 
+  if(mockInterview?.length > 0){
+    navigate(`/interview/${mockId}`);
+  }
+  console.log(response);
   return (
     <div className="max-w-xl mx-auto p-4 bg-white rounded-lg shadow-md">
       <form className="space-y-4">

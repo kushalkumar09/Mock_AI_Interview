@@ -5,15 +5,16 @@ import { model } from "../../server.js";
 export const getResponse = async (req, res) => {
   try {
     // Extract user input and prompt details from the request body
-    const userInput = req.body.newPrompt;
+    // const userInput = req.body.newPrompt;
     const { JobPosition, JobDescription, YearOfExperience } = req.body.prompt;
+    const userInput = `Job Position : ${JobPosition}, Job Description: ${JobDescription}, Year of experience:${YearOfExperience}. Depends on the information generate 5 Interview question and answer . generate question and answer as  json field in response example:[{question:ai generated question based on the given information from the user , answer:the answer user give}]`
 
     // Configuration for the chat generation model
     const generationConfig = {
       temperature: 1,
       topP: 0.95,
       topK: 40,
-      maxOutputTokens: 8192,
+      maxOutputTokens: 4000,
       responseMimeType: "text/plain",
     };
 
@@ -53,6 +54,7 @@ export const getResponse = async (req, res) => {
         return res.status(200).json({
           message: "Mock Interview saved successfully!",
           data: mockJsonResponse,
+          mockId: savedInterview.mockInterviewId,
         });
       } catch (saveError) {
         // Handle errors related to saving the mock interview
