@@ -1,3 +1,4 @@
+import ApiEndPoints from "@/constants/endpoint";
 import { InputFormDetails } from "@/constants/InputConstants";
 import { usePromptResponse } from "@/hooks/ApiHooks/usePromptResponse.jsx";
 import { useState, useEffect } from "react";
@@ -10,19 +11,22 @@ const MockDetails = () => {
     YearOfExperience: 0,
   });
 
-  const { response, loading, fetchData, error ,mockId} = usePromptResponse();
+  // get ai model response which will give questions in response
+  const { endPoint, method } = ApiEndPoints.AiResponse;
+  const { response, loading, fetchData, error, mockId } = usePromptResponse(
+    endPoint,
+    method
+  );
   const [mockInterview, setMockInterview] = useState([]);
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-
     if (response) {
-        console.table("Response Data:", response);
-        setMockInterview(response);
-      }
+      console.table("Response Data:", response);
+      setMockInterview(response);
+    }
   }, [response]);
-
 
   const handleButton = (e) => {
     e.preventDefault();
@@ -39,7 +43,7 @@ const MockDetails = () => {
     }));
   };
 
-  if(mockInterview?.length > 0){
+  if (mockInterview?.length > 0) {
     navigate(`/interview/${mockId}`);
   }
   console.log(response);
@@ -58,7 +62,7 @@ const MockDetails = () => {
               id={`${item.name}_${i}`}
               type="text"
               name={item.name}
-              placeholder={item.placeholderdata}
+              placeholder={item.placeHolderData}
               required
               onChange={(e) => handleInputFields(e, i)}
               className="mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"

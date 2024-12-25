@@ -19,11 +19,21 @@ app.use(
   })
 );
 
+connectDB();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-export const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 40,
+  maxOutputTokens: 4000,
+  responseMimeType: "text/plain",
+};
+
+export const chatSession = model.startChat({ generationConfig });
 
 app.use("/api", router);
-connectDB();
 app.listen(3000, () =>
   console.log(`server is running at http://localhost:3000`)
 );

@@ -1,22 +1,21 @@
-import ApiEndPoints from "@/constants/endpoint";
+
 import { useState } from "react";
-export const usePromptResponse = () => {
+export const usePromptResponse = (endpoint, method) => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [mockId, setMockId] = useState("");
 
   const fetchData = async (prompt) => {
-    
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(ApiEndPoints.AiResponse.endPoint, {
-        method: ApiEndPoints.AiResponse.method,
+      const res = await fetch(endpoint, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({prompt}), // Send the dynamic prompt
+        body: JSON.stringify({ prompt }), // Send the dynamic prompt
       });
 
       const data = await res.json();
@@ -31,7 +30,6 @@ export const usePromptResponse = () => {
     }
   };
 
-
   // Fetch data whenever the prompt changes
-  return { response, loading, error,fetchData, mockId };
-}; 
+  return { response, loading, error, fetchData, mockId };
+};

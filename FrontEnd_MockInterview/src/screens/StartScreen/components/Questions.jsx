@@ -1,9 +1,7 @@
 import { Volume2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const Questions = ({ data }) => {
-  const [activeQuestion, setActiveQuestion] = useState(0);
-
+const Questions = ({ data, handleActiveQuestion, currentQuestion }) => {
   // Ensure data is valid before proceeding
   const questions = data?.InterviewQuestions || [];
 
@@ -28,7 +26,7 @@ const Questions = ({ data }) => {
     if (synth && synth.speaking) {
       synth.cancel();
     }
-  }, [activeQuestion]);
+  }, [currentQuestion]);
 
   // Return null if there are no questions
   if (questions.length === 0) return null;
@@ -37,16 +35,14 @@ const Questions = ({ data }) => {
     <>
       <h1 className="text-left font-bold text-2xl mb-6">Questions</h1>
       <div className="flex gap-6">
-        {questions.map((question, index) => (
+        {questions.map((_, index) => (
           <span
-            onClick={() => setActiveQuestion(index)}
+            onClick={() => handleActiveQuestion(index)}
             key={index}
             className={`flex items-center justify-center h-8 w-8 ${
-              index === activeQuestion ? "bg-blue-500" : "bg-green-500"
+              index === currentQuestion ? "bg-blue-500" : "bg-green-500"
             } text-white font-bold rounded-full border ${
-              index === activeQuestion
-                ? "border-blue-600"
-                : "border-green-600"
+              index === currentQuestion ? "border-blue-600" : "border-green-600"
             } cursor-pointer`}
             aria-label={`Question ${index + 1}`}
           >
@@ -55,10 +51,10 @@ const Questions = ({ data }) => {
         ))}
       </div>
       <div className="text-justify mt-8 text-gray-600 font-medium text-xl">
-        {questions[activeQuestion].question}
+        {questions[currentQuestion].question}
       </div>
       <Volume2
-        onClick={() => textToSpeech(questions[activeQuestion].question)}
+        onClick={() => textToSpeech(questions[currentQuestion].question)}
         className="cursor-pointer"
         aria-label="Read question aloud"
       />
