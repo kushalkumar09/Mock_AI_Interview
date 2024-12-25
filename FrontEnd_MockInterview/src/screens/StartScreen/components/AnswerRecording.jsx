@@ -41,13 +41,11 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
   const saveUserAnswer = () => {
     if (isRecording) {
       stopSpeechToText();
-      console.log(prompt);
       if (prompt.userAnswer && useranswer.length > 10) {
         fetchData(prompt);
         toast({
           description: "Your Answer is saved",
         });
-        setUserAnswer("");
       } else {
         toast({
           description: "Answer Not Recorded",
