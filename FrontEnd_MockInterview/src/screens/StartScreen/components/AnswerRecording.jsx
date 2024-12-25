@@ -1,11 +1,13 @@
 import ApiEndPoints from "@/constants/endpoint";
 import { usePromptResponse } from "@/hooks/Apihooks/usePromptResponse";
+import { useToast } from "@/hooks/use-toast";
 import { Mic } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
 import Webcam from "react-webcam";
 
-const AnswerRecording = ({ data, currentQuestion }) => {
+const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
+  const { toast } = useToast();
   const [recording, setRecording] = useState(true);
   const [useranswer, setUserAnswer] = useState("");
   const prompt = {
@@ -19,11 +21,6 @@ const AnswerRecording = ({ data, currentQuestion }) => {
       continuous: true,
       useLegacyResults: false,
     });
-
-  // useEffect(() => {
-  //   console.table(results);
-  //   results.map((result) => setUserAnswer((prev) => prev + result.transcript));
-  // }, [results]);
 
   useEffect(() => {
     // Check if results have any transcripts
@@ -43,12 +40,22 @@ const AnswerRecording = ({ data, currentQuestion }) => {
 
   const saveUserAnswer = () => {
     if (isRecording) {
-      console.log("recording stopped for question");
-      console.table(prompt);
-      fetchData(prompt);
       stopSpeechToText();
+      console.log(prompt);
+      if (prompt.userAnswer && useranswer.length > 10) {
+        fetchData(prompt);
+        toast({
+          description: "Your Answer is saved",
+        });
+        setUserAnswer("");
+      } else {
+        toast({
+          description: "Answer Not Recorded",
+        });
+        return;
+      }
     } else {
-      console.log("recording started for question");
+      results.length = 0;
       startSpeechToText();
     }
   };
@@ -61,34 +68,55 @@ const AnswerRecording = ({ data, currentQuestion }) => {
       </p>
     );
   return (
-    <div>
-      <div className="flex flex-col min-h-[300px] items-center justify-center bg-black p-5 mx-10 rounded-md">
+    <div className="flex flex-col items-center justify-around w-full h-full p-5 space-y-5 bg-gray-800 rounded-md">
+      <div className="flex flex-col items-center justify-center w-full min-h-60 max-h-72 bg-black rounded-md">
         {recording ? (
           <Webcam
             onUserMedia={() => setRecording(true)}
             onUserMediaError={() => setRecording(false)}
             mirrored
-            style={{ height: 300, width: "100%", padding: 25 }}
+            className="w-full h-full rounded-md"
           />
         ) : (
-          <div className="flex items-center justify-center h-[30px] w-fit p-5  bg-red-500 text-white font-bold ">
+          <div className="flex items-center justify-center w-full h-full p-5 bg-red-500 text-white font-bold rounded-md">
             Camera Not Permitted
           </div>
         )}
       </div>
-      <div>
+      <div className="flex flex-col items-center space-y-3">
         <button
-          className={`px-8 py-2 border rounded-lg mt-5 ${
+          className={`px-8 py-2 border rounded-lg ${
             isRecording ? "bg-red-500" : "bg-green-500"
           } text-white`}
           onClick={saveUserAnswer}
         >
-          <h1 className="flex gap-1 text-center font-medium text-white text-lg ">
-            <Mic></Mic>
-            {isRecording ? "Stop Recording..." : "Start Recording"}
+          <h1 className="flex items-center gap-2 text-lg font-medium">
+            <Mic />
+            {isRecording ? "Stop Recording" : "Start Recording"}
           </h1>
         </button>
-        <button onClick={() => console.log(useranswer)}>show on console</button>
+        <div className="flex space-x-4">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            onClick={() => {
+              if (currentQuestion > 0) {
+                handleActiveQuestion(currentQuestion - 1);
+              }
+            }}
+          >
+            Previous Question
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+            onClick={() => {
+              if (currentQuestion < data?.InterviewQuestions.length - 1) {
+                handleActiveQuestion(currentQuestion + 1);
+              }
+            }}
+          >
+            {(currentQuestion+1===data?.InterviewQuestions.length)?"End Interview":"Next Question"}
+          </button>
+        </div>
       </div>
     </div>
   );

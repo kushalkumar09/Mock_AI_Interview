@@ -20,16 +20,16 @@ const Startscreen = () => {
 
   return (
     <>
-      <div className="flex justify-between p-6 border w-[100%] h-[70vh]">
-        <div className="min-w-[50%]">
+      <div className="flex flex-col md:flex-row justify-between p-10 m-12 border rounded-lg shadow-lg w-auto bg-white h-full">
+        <div className="flex-1 md:mr-4 mb-4 md:mb-0">
           <Questions
             data={data}
             handleActiveQuestion={handleActiveQuestion}
             currentQuestion={activeQuestion}
           />
         </div>
-        <div className="min-w-[50%]">
-          <AnswerRecording currentQuestion={activeQuestion} data={data} />
+        <div className="flex-1 md:ml-4">
+          <AnswerRecording currentQuestion={activeQuestion} data={data} handleActiveQuestion={handleActiveQuestion}/>
         </div>
       </div>
     </>
