@@ -1,5 +1,5 @@
 import ApiEndPoints from "@/constants/endpoint";
-import { usePromptResponse } from "@/hooks/ApiHooks/usePromptResponse";
+import { usePromptResponse } from "@/hooks/Apihooks/usePromptResponse";
 import { useToast } from "@/hooks/use-toast";
 import { Mic } from "lucide-react";
 import React, { useEffect, useState } from "react";

@@ -1,6 +1,6 @@
 import ApiEndPoints from "@/constants/endpoint";
 import { InputFormDetails } from "@/constants/InputConstants";
-import { usePromptResponse } from "@/hooks/ApiHooks/usePromptResponse";
+import { usePromptResponse } from "@/hooks/Apihooks/usePromptResponse";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
