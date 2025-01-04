@@ -1,6 +1,7 @@
 
-const backendUrl = import.meta.env.VITE_LOCAL_API_URL;
-//local url = 
+// const backendUrl = import.meta.env.VITE_LOCAL_API_URL;
+const backendUrl = import.meta.env.VITE_SERVER_API_URL;
+
 const ApiEndPoints = {
     AiResponse:{
         endPoint: `${backendUrl}/airesponse`,
