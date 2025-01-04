@@ -13,7 +13,13 @@ const useFetchData = (endpoint) => {
       setError(null); 
 
       try {
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint,{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         // Check if the response is successful
         if (!response.ok) {

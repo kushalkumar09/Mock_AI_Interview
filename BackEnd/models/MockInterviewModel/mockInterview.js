@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
-
 const mockInterviewSchema = new mongoose.Schema(
   {
     mockInterviewId: {
       type: String,
       required: true,
       unique: true,
+    },
+    userId: {
+      type: String,
+      required: true,
     },
     JobPosition: {
       type: String,

@@ -6,6 +6,10 @@ const userAnswerSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  questionId: {
+    type: Number,
+    required: true,
+  },
   userAnswer: {
     type: String,
     required: true,
@@ -16,11 +20,20 @@ const userAnswerSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  rating: {
+    type: Number,
+    required: true,
+  },
+  feedback: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 }, {
   timestamps: true, // Automatically manage createdAt and updatedAt fields
 });
 
 // Create the UserAnswer model
-const UserAnswer = mongoose.model('User Answer', userAnswerSchema);
+const UserAnswerModel = mongoose.model('UserAnswer', userAnswerSchema);
 
-export default UserAnswer;
+export default UserAnswerModel;

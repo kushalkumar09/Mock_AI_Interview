@@ -14,12 +14,12 @@ export const usePromptResponse = (endpoint, method) => {
         method: method,
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ prompt }), // Send the dynamic prompt
       });
 
       const data = await res.json();
-      console.log(data);
       setResponse(data?.data || "No data returned");
       setMockId(data?.mockId || "");
     } catch (error) {

@@ -1,5 +1,6 @@
-const backendUrl = "http://localhost:3000/api";
 
+const backendUrl = import.meta.env.VITE_LOCAL_API_URL;
+//local url = 
 const ApiEndPoints = {
     AiResponse:{
         endPoint: `${backendUrl}/airesponse`,
@@ -7,12 +8,31 @@ const ApiEndPoints = {
     },
     AiFeedback:{
         endPoint: `${backendUrl}/interview/:id/start/feedback`,
-        method:"POST"
+        method:"PUT"
     },
     MockInterview:{
         endPoint: `${backendUrl}/interview/:id`,
         method:"GET"
     },
+    GetInterviewFeedback:{
+        endPoint: `${backendUrl}/interview/:id/feedback`,
+        method:"GET"
+    },
+    GetPreviousInterviews:{
+        endPoint: `${backendUrl}/allInterviews`,
+        method:"GET"
+    },
+}
+
+export const AuthEndPoints = {
+    SignUp:{
+        endPoint: `${backendUrl}/signup`,
+        method:"POST"
+    },
+    Login:{
+        endPoint: `${backendUrl}/login`,
+        method:"POST"
+    }
 }
 
 export default ApiEndPoints;

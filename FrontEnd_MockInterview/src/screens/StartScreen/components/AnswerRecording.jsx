@@ -13,18 +13,25 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
   const prompt = {
     question: data?.InterviewQuestions[currentQuestion].question,
     userAnswer: useranswer,
+    mockId: data?.mockInterviewId,
+    questionNumber: currentQuestion,
   };
   const { endPoint, method } = ApiEndPoints?.AiFeedback;
-  const { response, fetchData } = usePromptResponse(endPoint, method);
-  const { error, isRecording, results, startSpeechToText, stopSpeechToText } =
-    useSpeechToText({
-      continuous: true,
-      useLegacyResults: false,
-    });
+  const { fetchData } = usePromptResponse(endPoint, method);
+  const {
+    error,
+    isRecording,
+    results,
+    startSpeechToText,
+    stopSpeechToText,
+    setResults,
+  } = useSpeechToText({
+    continuous: true,
+    useLegacyResults: false,
+  });
 
   useEffect(() => {
-    // Check if results have any transcripts
-    if (results.length > 0) {
+    if (results.length >0) {
       const newAnswer = results.reduce(
         (acc, result) => acc + result.transcript + " ",
         ""
@@ -34,7 +41,8 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
   }, [results]);
 
   useEffect(() => {
-    results.length = 0;
+    stopSpeechToText();
+    setResults([]);
     setUserAnswer("");
   }, [currentQuestion]);
 
@@ -53,7 +61,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
         return;
       }
     } else {
-      results.length = 0;
+      setResults([]);
       startSpeechToText();
     }
   };
@@ -109,6 +117,11 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             onClick={() => {
               if (currentQuestion < data?.InterviewQuestions.length - 1) {
                 handleActiveQuestion(currentQuestion + 1);
+              } else if (
+                currentQuestion ===
+                data?.InterviewQuestions.length - 1
+              ) {
+                window.location.href = `/interview/${data?.mockInterviewId}/feedback`;
               }
             }}
           >
