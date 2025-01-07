@@ -7,18 +7,14 @@ import { Link, useNavigate } from "react-router";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn } = useContext(AppContent);
+  const {setIsLoggedIn } = useContext(AppContent);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    if (isLoggedIn && localStorage.getItem("login")) {
-      navigate("/");
-    }
-  }, [isLoggedIn]);
+  
 
   const { toast } = useToast();
 
@@ -37,10 +33,13 @@ const Login = () => {
       localStorage.setItem("token", responseData.token);
       localStorage.setItem("login", true);
       setIsLoggedIn(true);
-      navigate("/");
-      toast("Login successful");
+      navigate("dashboard");
+      toast({
+        title: "Success!",
+        description: "Logged In successfully",
+      });
     } else {
-      toast("Login failed");
+      toast({ description: "Login failed" });
     }
   };
 

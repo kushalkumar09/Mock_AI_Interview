@@ -4,18 +4,18 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router";
 
 export const Navbar = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AppContent);
+  const { setIsLoggedIn } = useContext(AppContent);
   const { toast } = useToast();
+  const login = localStorage.getItem("login");
 
-  
   const handleLogout = () => {
-    setIsLoggedIn(false);
     localStorage.removeItem("login");
     localStorage.removeItem("token");
+    setIsLoggedIn(false);
     toast({
-        title: "Success!",
-        description: "Logged out successfully",
-      });
+      title: "Success!",
+      description: "Logged out successfully",
+    });
   };
   return (
     <nav className="bg-white shadow-md p-4">
@@ -41,7 +41,7 @@ export const Navbar = () => {
             Mock Interview
           </span>
         </div>
-        {!isLoggedIn && (
+        {!login && (
           <div className="flex items-center gap-3">
             <Link
               to={"/login"}
@@ -57,7 +57,7 @@ export const Navbar = () => {
             </Link>
           </div>
         )}
-        {isLoggedIn && (
+        {login && (
           <>
             <button
               onClick={handleLogout}
