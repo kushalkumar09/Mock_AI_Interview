@@ -4,10 +4,11 @@ import ApiEndPoints from "@/constants/endpoint";
 import useFetchData from "@/hooks/Apihooks/useApiResponse";
 import { CheckCircleIcon, XCircleIcon } from "lucide-react";
 import React from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const Feedback = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data, loading, error } = useFetchData(
     ApiEndPoints.GetInterviewFeedback.endPoint.replace(":id", id)
   );
@@ -138,7 +139,10 @@ const Feedback = () => {
           ))}
         </div>
       </ScrollArea>
-      <Button className="bg-blue-600 text-white hover:bg-blue-700 mt-2 p-6 rounded-lg shadow-md text-lg font-semibold" onClick={() => window.location.href = "/dashboard"}>
+      <Button
+        className="bg-blue-600 text-white hover:bg-blue-700 mt-2 p-6 rounded-lg shadow-md text-lg font-semibold"
+        onClick={() => navigate("/dashboard")}
+      >
         Go To DashBoard
       </Button>
     </div>
