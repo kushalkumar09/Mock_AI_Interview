@@ -8,8 +8,9 @@ const MockDetails = ({ onClose }) => {
   const [promptData, setPromptData] = useState({
     JobPosition: "",
     JobDescription: "",
-    YearOfExperience: 0,
+    YearOfExperience: "",
   });
+  const [isValid, setIsValid] = useState(false); // New state for button validation
 
   const { endPoint, method } = ApiEndPoints.AiResponse;
   const { response, loading, fetchData, error, mockId } = usePromptResponse(
@@ -17,20 +18,28 @@ const MockDetails = ({ onClose }) => {
     method
   );
   const [mockInterview, setMockInterview] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
     if (response) {
-      console.table("Response Data:", response);
       setMockInterview(response);
     }
   }, [response, mockId]);
 
+  useEffect(() => {
+    // Validation Logic: Enable the button only if all fields are valid
+    const isFormValid =
+      promptData.JobPosition.trim() !== "" &&
+      promptData.JobDescription.trim() !== "" &&
+      !isNaN(promptData.YearOfExperience) &&
+      Number(promptData.YearOfExperience) > 0;
+
+    setIsValid(isFormValid);
+  }, [promptData]);
+
   const handleButton = (e) => {
     e.preventDefault();
-    console.log(promptData);
-    if (promptData) {
+    if (isValid) {
       fetchData(promptData);
     }
   };
@@ -63,11 +72,12 @@ const MockDetails = ({ onClose }) => {
             </label>
             <input
               id={`${item.name}_${i}`}
-              type="text"
+              type={item.name === "YearOfExperience" ? "number" : "text"}
               name={item.name}
               placeholder={item.placeHolderData}
-              required
+              required={true}
               onChange={(e) => handleInputFields(e, i)}
+              value={promptData[item.name]}
               className="mt-2 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-500"
             />
           </div>
@@ -76,8 +86,10 @@ const MockDetails = ({ onClose }) => {
         <div className="flex justify-center">
           <button
             onClick={handleButton}
-            disabled={loading}
-            className="w-full py-3 px-6 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300 disabled:bg-gray-400"
+            disabled={!isValid || loading}
+            className={`w-full py-3 px-6 font-semibold rounded-lg transition-all duration-300 focus:outline-none 
+              ${isValid ? "bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500" : 
+                          "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
           >
             {loading ? "Loading..." : "Start Interview"}
           </button>
