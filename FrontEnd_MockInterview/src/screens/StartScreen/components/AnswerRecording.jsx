@@ -4,12 +4,14 @@ import { useToast } from "@/hooks/use-toast";
 import { Mic } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import useSpeechToText from "react-hook-speech-to-text";
+import { useNavigate } from "react-router";
 import Webcam from "react-webcam";
 
 const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
   const { toast } = useToast();
   const [recording, setRecording] = useState(true);
   const [useranswer, setUserAnswer] = useState("");
+  const navigate = useNavigate();
   const prompt = {
     question: data?.InterviewQuestions[currentQuestion].question,
     userAnswer: useranswer,
@@ -121,7 +123,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
                 currentQuestion ===
                 data?.InterviewQuestions.length - 1
               ) {
-                window.location.href = `/interview/${data?.mockInterviewId}/feedback`;
+                navigate(`/interview/${data?.mockInterviewId}/feedback`);
               }
             }}
           >
