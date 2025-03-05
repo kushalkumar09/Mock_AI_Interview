@@ -424,11 +424,14 @@ const Home = () => {
   const { isLoggedIn } = useContext(AppContent);
   const [login, setLogin] = useState(null); // Start with `null` to indicate "loading"
   const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
+  console.log(path);
 
   useEffect(() => {
     if (isLoggedIn !== undefined) {
       setLogin(isLoggedIn);
-      if (isLoggedIn) {
+      if (isLoggedIn && path === "/") {
         navigate("/dashboard");
       }
     }
@@ -441,7 +444,7 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      {login ? (
+      {login && path !== "/" ? (
         <Outlet />
       ) : (
         <>
