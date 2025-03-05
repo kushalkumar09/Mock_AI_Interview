@@ -124,7 +124,7 @@ const Feedback = () => {
                 </p>
                 <button
                   className="mt-6 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300"
-                  onClick={() => navigate("/mock-test")}
+                  onClick={() => navigate(`/interview/${id}/start`)}
                 >
                   Retake Test
                 </button>
