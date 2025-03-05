@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Link, Outlet, useLocation } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
 import { Navbar } from "./componentsHome/Navbar";
 import Footer from "./componentsHome/Footer";
 import { Button } from "@/components/ui/button";
 import { AppContent } from "@/context/Appcontext";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import { Star } from "lucide-react"
+import { Star } from "lucide-react";
 import {
   Brain,
   ListChecks,
@@ -16,15 +16,14 @@ import {
   BarChart3,
   Users,
 } from "lucide-react";
-import { Badge } from "lucide-react";
-// import aiImage from "@/assets/Images/ai-tools.webp";
+import { Badge } from "@/components/ui/badge";
+import Loader from "./componentsHome/Loader";
 
 const HeroSection = () => {
   const { isLoggedIn } = useContext(AppContent);
-  console.log(isLoggedIn);
   return (
     <section className="w-full bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
-      <div className="container mx-auto px-6 py-16 md:py-24 lg:py-32">
+      <div className="container mx-auto px-8 py-16 md:py-24 lg:py-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
           <div className="flex flex-col space-y-6 text-white">
@@ -172,7 +171,7 @@ const FeaturesSection = () => {
 
   return (
     <section className="w-full py-24 bg-slate-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <Badge
             variant="outline"
@@ -195,15 +194,17 @@ const FeaturesSection = () => {
               key={index}
               className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-100 transition-all duration-300 group"
             >
-              <div className="mb-5 inline-flex p-3 rounded-lg bg-blue-50">
-                {feature.icon}
+              <div className="flex flex-wrap justify-between items-center">
+                <div className="mb-5 inline-flex p-2 rounded-lg bg-blue-50">
+                  {feature.icon}
+                </div>
+                <Badge
+                  variant="secondary"
+                  className="mb-3 min-w-fit w-[40%] p-2 bg-slate-100 text-slate-700 hover:bg-slate-200"
+                >
+                  {feature.tag}
+                </Badge>
               </div>
-              <Badge
-                variant="secondary"
-                className="mb-3 bg-slate-100 text-slate-700 hover:bg-slate-200"
-              >
-                {feature.tag}
-              </Badge>
               <h3 className="text-xl font-semibold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
                 {feature.title}
               </h3>
@@ -420,26 +421,36 @@ const CallToActionSection = () => {
 };
 
 const Home = () => {
-  const location = useLocation();
-  const path = location.pathname;
+  const { isLoggedIn } = useContext(AppContent);
+  const [login, setLogin] = useState(null); // Start with `null` to indicate "loading"
+  const navigate = useNavigate();
 
-  if (path !== "/") {
-    return (
-      <>
-        <Navbar />
-        <Outlet />
-        <Footer />
-      </>
-    );
+  useEffect(() => {
+    if (isLoggedIn !== undefined) {
+      setLogin(isLoggedIn);
+      if (isLoggedIn) {
+        navigate("/dashboard");
+      }
+    }
+  }, [isLoggedIn, navigate]);
+
+  if (login === null) {
+    return <Loader />;
   }
 
   return (
     <>
       <Navbar />
-      <HeroSection />
-      <FeaturesSection />
-      <TestimonialsSection />
-      <CallToActionSection />
+      {login ? (
+        <Outlet />
+      ) : (
+        <>
+          <HeroSection />
+          <FeaturesSection />
+          <TestimonialsSection />
+          <CallToActionSection />
+        </>
+      )}
       <Footer />
     </>
   );

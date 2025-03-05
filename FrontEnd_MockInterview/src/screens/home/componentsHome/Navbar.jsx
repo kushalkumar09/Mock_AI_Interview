@@ -25,7 +25,9 @@ export const Navbar = () => {
         </span>
 
         <div className="hidden md:flex items-center justify-evenly">
-          <Link to={"/"} className="px-4">Home</Link>
+          <Link to={(login)?"dashboard":"/"} className="px-4">
+            Home
+          </Link>
           <Link className="px-4">About Us</Link>
           <Link className="px-4">Services</Link>
         </div>

@@ -80,7 +80,7 @@ const Dashboard = () => {
     <div className="container mx-auto py-8 px-4 min-h-screen bg-slate-50/50">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Dashboard</h1>
+          <h1 className="text-3xl font-bold text-slate-800">Performance Insights</h1>
           <p className="text-slate-500 mt-1">Manage and track your interview practice</p>
         </div>
         <Button 
