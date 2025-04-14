@@ -1,7 +1,7 @@
 import { AuthEndPoints } from "@/constants/endpoint";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 const Signup = () => {
   const {
     register,
@@ -9,23 +9,38 @@ const Signup = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  const [apiError, setApiError] = useState("");
 
-  const onSubmit = async(data) => {
-    const signup = await fetch(AuthEndPoints.SignUp.endPoint, {
-      method: AuthEndPoints.SignUp.method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    console.log(signup);
-    
-    if (signup.ok) {
-      const responseData = await signup.json();
-      localStorage.setItem("token", responseData.token);
-      navigate("/");
-    } else {
-      console.log("Signup failed");
+  const onSubmit = async (data) => {
+    setApiError("");
+    try {
+      const signup = await fetch(AuthEndPoints.SignUp.endPoint, {
+        method: AuthEndPoints.SignUp.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(signup);
+
+      if (signup.ok) {
+        const responseData = await signup.json();
+        localStorage.setItem("token", responseData.token);
+        navigate("/");
+      } else if (signup.status === 409) {
+        const errorData = await signup
+          .json()
+          .catch(() => ({ message: "User already exists." }));
+        setApiError(errorData.message || "User already exists.");
+      } else {
+        const errorData = await signup
+          .json()
+          .catch(() => ({ message: "Unknown error occurred" }));
+        setApiError(errorData.message || signup.statusText);
+      }
+    } catch (error) {
+      console.error("Error during signup:", error);
+      setApiError("An error occurred. Please try again later.");
     }
   };
   return (
@@ -82,12 +97,17 @@ const Signup = () => {
           >
             Signup
           </button>
-          <button
+          {apiError && (
+            <div className="mt-4 text-red-600 text-center bg-red-100 p-2 rounded-lg">
+              {apiError}
+            </div>
+          )}
+          {/* <button
             type="button"
             className="w-full border border-gray-300 text-gray-700 p-3 rounded-lg hover:bg-gray-200 transition duration-300"
           >
             Continue with Google
-          </button>
+          </button> */}
         </form>
         <p className="mt-6 text-sm text-gray-600">
           Already have an account?{" "}

@@ -1,45 +1,72 @@
 import { AuthEndPoints } from "@/constants/endpoint";
 import { AppContent } from "@/context/Appcontext";
 import { useToast } from "@/hooks/use-toast";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 
 const Login = () => {
   const navigate = useNavigate();
-  const {setIsLoggedIn } = useContext(AppContent);
+  const { setIsLoggedIn } = useContext(AppContent);
+  const [apiError, setApiError] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  
-
   const { toast } = useToast();
 
   const onSubmit = async (data) => {
-    const login = await fetch(AuthEndPoints.Login.endPoint, {
-      method: AuthEndPoints.Login.method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      setApiError(""); // Clear previous errors
 
-    if (login.ok) {
-      const responseData = await login.json();
-      localStorage.setItem("token", responseData.token);
-      localStorage.setItem("login", true);
-      setIsLoggedIn(true);
-      navigate("dashboard");
-      toast({
-        title: "Success!",
-        description: "Logged In successfully",
+      const response = await fetch(AuthEndPoints.Login.endPoint, {
+        method: AuthEndPoints.Login.method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data),
       });
-    } else {
-      toast({ description: "Login failed" });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("login", "true");
+        setIsLoggedIn(true);
+
+        toast({
+          title: "Login Successful!",
+          description: "Welcome back 👋",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        navigate("dashboard");
+      } else {
+        toast({
+          title: "Login Failed",
+          description:
+            result.message || "Invalid credentials. Please try again.",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      setApiError("An unexpected error occurred. Please try again later.");
+
+      toast({
+        title: "Error",
+        description: "Something went wrong. Check your connection.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   };
 
@@ -106,13 +133,21 @@ const Login = () => {
             Login
           </button>
 
+          {apiError && (
+            <div className="mt-4 text-red-600 text-center bg-red-100 p-2 rounded-lg">
+              {apiError}
+            </div>
+          )}
+
+          {/* Optional Google Button */}
+
           {/* Google Button */}
-          <button
+          {/* <button
             type="button"
             className="w-full border border-gray-300 text-gray-700 p-3 rounded-lg hover:bg-gray-200 transition duration-300"
           >
             Continue with Google
-          </button>
+          </button> */}
         </form>
 
         <p className="mt-6 text-sm text-gray-600">
