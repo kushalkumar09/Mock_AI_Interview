@@ -11,6 +11,7 @@ import Signup from "./screens/LoginSignup/Signup";
 import Protected from "./screens/Protected";
 import { useContext, useEffect } from "react";
 import { AppContent } from "./context/Appcontext";
+import UnknownRoute from "./screens/home/componentsHome/UnknownRoute";
 
 function App() {
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContent);
@@ -41,7 +42,7 @@ function App() {
             <Route path="interview/:id/feedback" element={<Feedback />} />
           </Route>
         </Route>
-        <Route path="/*" element={<Navigate to={"/"}></Navigate>} />
+        <Route path="/*" element={<UnknownRoute/>} />
       </Routes>
       <Toaster />
     </>
