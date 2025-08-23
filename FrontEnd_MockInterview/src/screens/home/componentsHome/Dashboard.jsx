@@ -32,6 +32,7 @@ import {
 import ApiEndPoints from "@/constants/endpoint";
 import useFetchData from "@/hooks/Apihooks/useApiResponse";
 import { useNavigate } from "react-router";
+import MockDetails from "./MockDetails";
 
 // Mock data for demonstration
 const pastInterviews = {
@@ -408,11 +409,7 @@ const Dashboard = () => {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
           <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-4">Create New Interview</h3>
-              <p className="text-gray-600 mb-4">MockDetails component would go here</p>
-              <Button onClick={() => setIsModalOpen(false)}>Close</Button>
-            </div>
+            <MockDetails onClose={() => setIsModalOpen(false)} />
           </div>
         </div>
       )}
