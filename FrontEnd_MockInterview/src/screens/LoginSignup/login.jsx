@@ -73,11 +73,11 @@ const Login = () => {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Left Section */}
-      <div className="hidden md:flex flex-col justify-center items-center w-1/2 lg:w-2/5 bg-gradient-to-br from-blue-600 to-blue-700 text-white p-10 shadow-2xl">
+      <div className="hidden md:flex flex-col justify-center items-center w-1/2 lg:w-2/5 bg-gradient-to-br from-gray-800 to-gray-900 text-white p-10 shadow-2xl">
         <div className="max-w-md mx-auto space-y-8">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight">Welcome Back!</h1>
-            <p className="text-lg text-blue-100">
+            <h1 className="text-4xl font-bold tracking-tight">Welcome to SkillMate</h1>
+            <p className="text-lg text-gray-100">
               Log in to access your dashboard and explore more.
             </p>
           </div>
@@ -91,7 +91,7 @@ const Login = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-2">Secure Login</h3>
-              <p className="text-sm text-blue-100">
+              <p className="text-sm text-gray-100">
                 Your data is encrypted and securely stored. We prioritize your privacy.
               </p>
             </div>
@@ -126,7 +126,7 @@ const Login = () => {
                   id="email"
                   type="text"
                   placeholder="you@example.com"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all duration-200"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -152,7 +152,7 @@ const Login = () => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <a href="#" className="text-sm text-blue-600 hover:text-blue-800 transition-colors">
+                <a href="#" className="text-sm text-background hover:text-gray-800 transition-colors">
                   Forgot password?
                 </a>
               </div>
@@ -166,7 +166,7 @@ const Login = () => {
                   id="password"
                   type="password"
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all duration-200"
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -189,7 +189,7 @@ const Login = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              className="w-full bg-background text-white py-3 px-4 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Sign in
             </button>
@@ -243,7 +243,7 @@ const Login = () => {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Don't have an account?{" "}
-              <Link to={"/signup"} className="text-blue-600 hover:text-blue-800 font-medium transition-colors">
+              <Link to={"/signup"} className="text-gray-600 hover:text-gray-800 font-medium transition-colors">
                 Sign up
               </Link>
             </p>

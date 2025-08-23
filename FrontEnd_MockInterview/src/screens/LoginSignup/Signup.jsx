@@ -46,11 +46,11 @@ const Signup = () => {
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Left Section */}
-      <div className="hidden md:flex flex-col justify-center items-center w-1/2 lg:w-2/5 bg-gradient-to-br from-blue-600 to-blue-700 text-white p-10 shadow-2xl">
+      <div className="hidden md:flex flex-col justify-center items-center w-1/2 lg:w-2/5 bg-gradient-to-br from-gray-800 to-gray-900 text-white p-10 shadow-2xl">
         <div className="max-w-md mx-auto space-y-8">
           <div className="space-y-2">
             <h1 className="text-4xl font-bold tracking-tight">Join Us!</h1>
-            <p className="text-lg text-blue-100">Create an account to explore more features.</p>
+            <p className="text-lg text-gray-100">Create an account to explore more features.</p>
           </div>
 
           <div className="relative">
@@ -73,7 +73,7 @@ const Signup = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-2">Create Account</h3>
-              <p className="text-sm text-blue-100">
+              <p className="text-sm text-gray-100">
                 Join our community and get access to exclusive features and content.
               </p>
             </div>
@@ -85,8 +85,8 @@ const Signup = () => {
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 lg:w-3/5 p-6 sm:p-10">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900">Sign Up</h1>
-            <p className="mt-2 text-gray-600">Create your account to get started</p>
+            <h1 className="text-3xl font-bold text-background">Sign Up</h1>
+            <p className="mt-2 text-background">Create your account to get started</p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -116,7 +116,7 @@ const Signup = () => {
                   id="username"
                   type="text"
                   placeholder="johndoe"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all duration-200"
                   {...register("username", { required: true })}
                 />
               </div>
@@ -167,7 +167,7 @@ const Signup = () => {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all duration-200"
                   {...register("email", { required: true })}
                 />
               </div>
@@ -218,7 +218,7 @@ const Signup = () => {
                   id="password"
                   type="password"
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all duration-200"
                   {...register("password", { required: true, minLength: 8 })}
                 />
               </div>
@@ -265,7 +265,7 @@ const Signup = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              className="w-full bg-background text-white py-3 px-4 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Create Account
             </button>
@@ -330,7 +330,7 @@ const Signup = () => {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <Link to={"/login"} className="text-blue-600 hover:text-blue-800 font-medium transition-colors">
+              <Link to={"/login"} className="text-gray-600 hover:text-gray-800 font-medium transition-colors">
                 Login
               </Link>
             </p>
