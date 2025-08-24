@@ -30,21 +30,24 @@ const Header = () => {
             </div>
             <span className="text-xl font-semibold text-foreground">SkillMate</span>
           </Link>
-          
-          <nav className="hidden md:flex items-center space-x-8">
+
+          {!login ? <><nav className="hidden md:flex items-center space-x-8">
             <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
             <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
             <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Reviews</a>
           </nav>
-          
-          <div className="flex items-center space-x-4">
-            <Button onClick={()=>(navigate("/login"))} variant="ghost" className="hidden sm:inline-flex">
-              Sign In
-            </Button>
-            <Button onClick={()=>(navigate("/signup"))}>
-              Get Started
-            </Button>
-          </div>
+
+            <div className="flex items-center space-x-4">
+              <Button onClick={() => (navigate("/login"))} variant="ghost" className="hidden sm:inline-flex">
+                Sign In
+              </Button>
+              <Button onClick={() => (navigate("/signup"))}>
+                Get Started
+              </Button>
+            </div>
+          </> : <Button onClick={handleLogout} variant="ghost" className="hidden sm:inline-flex">
+            Logout
+          </Button>}
         </div>
       </div>
     </header>
