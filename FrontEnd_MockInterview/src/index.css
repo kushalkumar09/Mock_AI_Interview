@@ -37,10 +37,10 @@
     /* Minimalistic design tokens */
     --gradient-subtle: linear-gradient(180deg, hsl(240 10% 3.9%) 0%, hsl(240 8% 6%) 100%);
     --gradient-accent: linear-gradient(90deg, hsl(0 0% 98%) 0%, hsl(240 5% 84%) 100%);
-    
+
     --shadow-soft: 0 4px 12px hsl(240 10% 3.9% / 0.3);
     --shadow-minimal: 0 1px 3px hsl(240 10% 3.9% / 0.2);
-    
+
     --transition-smooth: all 0.2s ease;
 
     --radius: 0.5rem;
@@ -108,5 +108,19 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  body::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    @apply bg-secondary;
+    border-radius: 6px;
+    border: 3px solid var(--background);
   }
 }

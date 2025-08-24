@@ -108,7 +108,7 @@ const Login = () => {
           </div>
 
           <form
-            className="space-y-6"
+            className="space-y-6 text-background"
             onSubmit={handleSubmit(onSubmit)}
           >
             {/* Email Input */}

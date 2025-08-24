@@ -27,10 +27,6 @@ const Home = () => {
     }
   }, [isLoggedIn, navigate]);
 
-  if (login === null) {
-    return <Loader />;
-  }
-
   return (
     <>
       {/* <Navbar /> */}

@@ -12,8 +12,13 @@ import Protected from "./screens/Protected";
 import { useContext, useEffect } from "react";
 import { AppContent } from "./context/Appcontext";
 import UnknownRoute from "./screens/home/componentsHome/UnknownRoute";
+import { ReactLenis, useLenis } from 'lenis/react'
 
 function App() {
+  const lenis = useLenis((lenis) => {
+    console.log(lenis)
+  })
+
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContent);
   useEffect(() => {
     const loggedin = localStorage.getItem("login");
@@ -24,6 +29,7 @@ function App() {
 
   return (
     <>
+      <ReactLenis root />
       <Routes>
         {!isLoggedIn && (
           <>

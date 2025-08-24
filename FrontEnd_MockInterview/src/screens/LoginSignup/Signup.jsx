@@ -89,7 +89,7 @@ const Signup = () => {
             <p className="mt-2 text-background">Create your account to get started</p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-background">
             {/* Username Input */}
             <div className="space-y-2">
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">
