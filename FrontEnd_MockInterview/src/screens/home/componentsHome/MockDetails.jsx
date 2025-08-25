@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react"
 import ApiEndPoints from "@/constants/endpoint"
 import { InputFormDetails } from "@/constants/InputConstants"
 import { usePromptResponse } from "@/hooks/Apihooks/usePromptResponse"
+import { Button } from "@/components/ui/button"
 
 const MockDetails = ({ onClose }) => {
   const [promptData, setPromptData] = useState({
@@ -56,7 +57,7 @@ const MockDetails = ({ onClose }) => {
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-sm shadow-lg overflow-hidden transition-all duration-300">
-      <div className="bg-gradient-to-r from-violet-500 to-blue-600 p-6">
+      <div className="bg-background p-6">
         <h1 className="text-2xl font-bold text-white">Mock Interview Setup</h1>
         <p className="text-violet-100 mt-1">Prepare for your next opportunity</p>
       </div>
@@ -76,7 +77,7 @@ const MockDetails = ({ onClose }) => {
                 required={true}
                 onChange={(e) => handleInputFields(e, i)}
                 value={promptData[item.name]}
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors duration-200"
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-violet-500 text-background transition-colors duration-200"
               />
             </div>
           ))}
@@ -88,13 +89,14 @@ const MockDetails = ({ onClose }) => {
           )}
 
           <div className="flex gap-3 pt-2">
-            <button
+            <Button
+            variant="outline"
               onClick={handleButton}
               disabled={!isValid || loading}
               className={`flex-1 py-2.5 px-4 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                 isValid && !loading
-                  ? "bg-violet-600 hover:bg-violet-700 text-white focus:ring-violet-500"
-                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                  ? " hover:bg-green-600 text-white focus:ring-violet-500"
+                  : " bg-gray-200 text-gray-500 cursor-not-allowed"
               }`}
             >
               {loading ? (
@@ -105,15 +107,15 @@ const MockDetails = ({ onClose }) => {
               ) : (
                 "Start Interview"
               )}
-            </button>
+            </Button>
 
-            <button
+            <Button
               type="button"
               onClick={onClose}
               className="flex-1 py-2.5 px-4 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
 
