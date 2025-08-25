@@ -33,7 +33,7 @@ const Questions = ({ data, handleActiveQuestion, currentQuestion }) => {
 
   return (
     <>
-      <h1 className="text-left font-bold text-4xl mb-10 text-gray-900">
+      <h1 className="text-left font-bold text-4xl mb-10 text-bg-background">
         Questions
       </h1>
       <div className="flex gap-4 flex-wrap">
@@ -42,20 +42,20 @@ const Questions = ({ data, handleActiveQuestion, currentQuestion }) => {
             onClick={() => handleActiveQuestion(index)}
             key={index}
             className={`flex items-center justify-center h-12 w-12 ${
-              index === currentQuestion ? "bg-blue-600" : "bg-gray-300"
-            } text-white font-bold rounded-full shadow-md transform transition-transform duration-300 hover:scale-110 cursor-pointer`}
+              index === currentQuestion ? "bg-yellow-600  text-white" : "bg-white "
+            }text-background font-bold rounded-full shadow-md transform transition-transform duration-300 hover:scale-110 cursor-pointer`}
             aria-label={`Question ${index + 1}`}
           >
             {index + 1}
           </span>
         ))}
       </div>
-      <div className="text-justify mt-8 text-gray-800 font-medium text-lg leading-relaxed bg-white p-6 rounded-lg shadow-md">
+      <div className="text-justify mt-4 text-bg-background font-light leading-relaxed bg-background py-4 rounded-lg">
         {questions[currentQuestion].question}
       </div>
       <Volume2
         onClick={() => textToSpeech(questions[currentQuestion].question)}
-        className="cursor-pointer mt-4 text-blue-600 hover:text-blue-800 transition-colors duration-300"
+        className="cursor-pointer mt-4 text-bg-background hover:text-blue-400 transition-colors duration-300"
         aria-label="Read question aloud"
       />
       <div className="bg-blue-100 p-6 mt-8 rounded-lg shadow-md flex flex-col items-start gap-4">

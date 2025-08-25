@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import ApiEndPoints from "@/constants/endpoint";
 import { usePromptResponse } from "@/hooks/Apihooks/usePromptResponse";
 import { useToast } from "@/hooks/use-toast";
@@ -86,14 +87,15 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             className="w-full h-full rounded-md"
           />
         ) : (
-          <div className="flex items-center justify-center w-full h-full p-5 bg-red-500 text-white font-bold rounded-md">
+          <div className="flex items-center justify-center w-full h-full p-5 bg-background text-white font-bold rounded-md">
             Camera Not Permitted
           </div>
         )}
       </div>
       <div className="flex flex-col items-center space-y-3">
-        <button
-          className={`px-8 py-2 border rounded-lg ${
+        <Button
+        variant="outline"
+          className={`border rounded-lg ${
             isRecording ? "bg-red-500" : "bg-green-500"
           } text-white`}
           onClick={saveUserAnswer}
@@ -102,10 +104,10 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             <Mic />
             {isRecording ? "Stop Recording" : "Start Recording"}
           </h1>
-        </button>
+        </Button >
         <div className="flex space-x-4">
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+          <Button
+            variant="outline"
             onClick={() => {
               if (currentQuestion > 0) {
                 handleActiveQuestion(currentQuestion - 1);
@@ -113,9 +115,9 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             }}
           >
             Previous Question
-          </button>
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+          </Button>
+          <Button
+            variant="outline"
             onClick={() => {
               if (currentQuestion < data?.InterviewQuestions.length - 1) {
                 handleActiveQuestion(currentQuestion + 1);
@@ -128,7 +130,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             }}
           >
             {(currentQuestion+1===data?.InterviewQuestions.length)?"End Interview":"Next Question"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
