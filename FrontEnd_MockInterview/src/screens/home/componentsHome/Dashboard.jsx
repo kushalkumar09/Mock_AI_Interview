@@ -202,7 +202,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/30">
+    <div className="min-h-screen bg-white">
       {/* Header Section */}
       <div className="bg-white border-b border-gray-100">
         <div className="container mx-auto py-6 px-4">
@@ -343,19 +343,19 @@ const Dashboard = () => {
             <TabsList className="bg-gray-100 p-1 rounded-lg">
               <TabsTrigger
                 value="all"
-                className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                className="rounded-md data-[state=active]:bg-background  data-[state=active]:shadow-sm"
               >
                 All Interviews
               </TabsTrigger>
               <TabsTrigger
                 value="recent"
-                className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                className="rounded-md data-[state=active]:bg-background data-[state=active]:shadow-sm"
               >
                 Recent
               </TabsTrigger>
               <TabsTrigger
                 value="by-position"
-                className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm"
+                className="rounded-md data-[state=active]:bg-background  data-[state=active]:shadow-sm"
               >
                 By Position
               </TabsTrigger>

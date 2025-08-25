@@ -40,9 +40,9 @@ const Home = () => {
           <HowItWorks/>
           <Testimonials/>
           <CTA/>
+          <Footer />
         </>
       )}
-      <Footer />
     </>
   );
 };

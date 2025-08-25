@@ -25,7 +25,7 @@ function App() {
 
   return (
     <>
-      <ReactLenis root />
+      <ReactLenis root options={{ smoothWheel: true }}>
       <Routes>
         {!isLoggedIn && (
           <>
@@ -47,6 +47,7 @@ function App() {
         <Route path="/*" element={<UnknownRoute/>} />
       </Routes>
       <Toaster />
+      </ReactLenis>
     </>
   );
 }

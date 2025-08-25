@@ -1,5 +1,7 @@
 "use client"
 
+import ApiEndPoints from '@/constants/endpoint';
+import useFetchData from '@/hooks/Apihooks/useApiResponse';
 import { Lightbulb, WebcamIcon } from 'lucide-react';
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -22,7 +24,7 @@ const Interview = () => {
   const [enableCamera, setEnableCamera] = useState(false);
 
   return (
-    <div className="min-h-screen max-w-[900px] max-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen max-w-[900px] max-h-screen overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-50 bg-background">
       <div className="h-screen flex flex-col p-4 md:p-6 lg:p-8">
         {/* Header */}
         <div className="text-center mb-4 md:mb-6">
