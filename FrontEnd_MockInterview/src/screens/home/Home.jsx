@@ -30,11 +30,11 @@ const Home = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <Header/>
       {login && path !== "/" ? (
         <Outlet />
       ) : (
         <>
+          <Header/>
           <Hero/>
           <Features/>
           <HowItWorks/>

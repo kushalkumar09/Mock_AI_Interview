@@ -13,6 +13,7 @@ import { useContext, useEffect } from "react";
 import { AppContent } from "./context/Appcontext";
 import UnknownRoute from "./screens/home/componentsHome/UnknownRoute";
 import { ReactLenis } from 'lenis/react'
+import NewDashboard from "./screens/home/componentsHome/NewDashboard";
 
 function App() {
   const { isLoggedIn, setIsLoggedIn } = useContext(AppContent);
@@ -38,7 +39,7 @@ function App() {
           <Route element={<Protected />}>
             <Route path="login" element={<Navigate to={"/"}></Navigate>} />
             <Route path="signup" element={<Navigate to={"/"}></Navigate>} />
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="dashboard" element={<NewDashboard/>} />
             <Route path="interview/:id" element={<Interview />} />
             <Route path="interview/:id/start" element={<Startscreen />} />
             <Route path="interview/:id/feedback" element={<Feedback />} />
