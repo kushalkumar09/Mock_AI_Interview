@@ -108,6 +108,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
         <div className="flex space-x-4">
           <Button
             variant="outline"
+            disabled={currentQuestion === 0}
             onClick={() => {
               if (currentQuestion > 0) {
                 handleActiveQuestion(currentQuestion - 1);
@@ -117,9 +118,14 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             Previous Question
           </Button>
           <Button
-            variant="outline"
+            variant="danger"
+            className={`${currentQuestion===data?.InterviewQuestions.length-1?"bg-red-600 text-white":"bg-blue-600 text-white"} `}
             onClick={() => {
               if (currentQuestion < data?.InterviewQuestions.length - 1) {
+                fetchData(prompt);
+                toast({
+                  description: "You Did not Answered the Question",
+                });
                 handleActiveQuestion(currentQuestion + 1);
               } else if (
                 currentQuestion ===

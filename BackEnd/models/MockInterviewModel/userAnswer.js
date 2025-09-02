@@ -12,7 +12,6 @@ const userAnswerSchema = new mongoose.Schema({
   },
   userAnswer: {
     type: String,
-    required: true,
     trim: true,
   },
   question: {
@@ -22,13 +21,21 @@ const userAnswerSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
+    default: 0,
     required: true,
   },
   feedback: {
     type: String,
+    default: "Ai Will Provide Feedback once Interview is Completed",
     required: true,
     trim: true,
   },
+  AiAnswer:{
+    type: String,
+    default: "Ai Will Provide Answer once Interview is Completed",
+    required: true,
+    trim: true,
+  }
 }, {
   timestamps: true, // Automatically manage createdAt and updatedAt fields
 });

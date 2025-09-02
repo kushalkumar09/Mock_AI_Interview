@@ -20,6 +20,7 @@ export const GetInterviewFeedback = async (req, res) => {
     }
     const { id } = req.params;
     const interview = await UserAnswerModel.find({ mockInterviewId: id });
+    console.log("Interview : ",interview);
     res.status(200).json({
       message: "Feedback fetched successfully!",
       data: interview,

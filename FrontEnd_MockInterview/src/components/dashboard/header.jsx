@@ -7,9 +7,11 @@ import { useContext, useState } from "react"
 import { Sidebar } from "./sidebar"
 import { useResolvedPath } from "react-router"
 import { AppContent } from "@/context/Appcontext"
+import MockDetails from "@/screens/home/componentsHome/MockDetails"
 
 export function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const path = useResolvedPath();
   const {currentUser} = useContext(AppContent);
 
@@ -37,7 +39,8 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">
+            <Button className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+            onClick={() => setIsModalOpen(true)}>
               Start New Interview
             </Button>
             <Button variant="ghost" size="icon" aria-label="Notifications">
@@ -59,6 +62,14 @@ export function Header() {
           </div>
         </div>
       ) : null}
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-md">
+            <MockDetails onClose={() => setIsModalOpen(false)} />
+          </div>
+        </div>
+      )}
     </>
   )
 }

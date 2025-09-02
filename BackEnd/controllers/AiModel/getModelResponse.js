@@ -80,7 +80,38 @@ export const getFeedback = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized access" });
     }
     const { question, userAnswer, mockId, questionNumber } = req.body.prompt;
-    const feedbackPrompt = `Question: ${question}, Answer: ${userAnswer}. Please provide a rating from 1 to 10 and feedback for improvement. Return the response in JSON format with only the following fields: "rating" and "feedback".the feedback length should be precise and to the point with area of focus under not exceeding 100 words. Example: {"rating": "8", "feedback": "Your answer is good, but..."}`;
+    const feedbackPrompt = `Act as an expert technical recruiter and interview coach. 
+You are evaluating a candidate’s answer to an interview question.
+
+Evaluation Criteria:
+1. Clarity & Conciseness – Is the answer easy to understand?
+2. Correctness & Accuracy – Is the technical information correct?
+3. Completeness – Does it fully address the question?
+4. Structure – Is the answer logically organized?
+
+Scoring Rules:
+- "rating" must be an integer from 0 to 100.
+- If the candidate's answer is empty, irrelevant, less than 10 words, or indicates the question was skipped → 
+  Return: 
+  {
+    "rating": "0",
+    "AiAnswer": "An ideal example answer the candidate can learn from.",
+    "feedback": "Your answer was not provided. Please give a complete response to get evaluated."
+  }
+- If the answer is perfect (clear, correct, complete, well-structured) → "rating": "100".
+- If the answer is partially correct/incomplete → "rating" between 20–80.
+- If the answer is mostly incorrect/off-topic → "rating" between 1–20.
+
+Response Format:
+Return ONLY valid JSON with exactly these three fields:
+{
+  "rating": "<number between 0-100>",
+  "AiAnswer": "An ideal example response.",
+  "feedback": "Constructive feedback in under 100 words."
+}
+
+Question: ${question}
+Candidate's Answer: ${userAnswer}`;
     const result = await chatSession.sendMessage(feedbackPrompt);
     if (result?.response?.candidates?.[0]?.content?.parts?.[0]?.text) {
       const rawFeedback = result.response.candidates[0].content.parts[0].text;
@@ -93,19 +124,18 @@ export const getFeedback = async (req, res) => {
       // Validate that the parsed response contains the required fields
       if (feedbackJson) {
         try {
-            const updateFeedback = {
+          const updateFeedback = {
             userAnswer,
             question,
             rating: feedbackJson.rating,
             feedback: feedbackJson.feedback,
-            };
-            const questionData = await UserAnswerModel.findOneAndUpdate(
+            AiAnswer: feedbackJson.AiAnswer,
+          };
+          const questionData = await UserAnswerModel.findOneAndUpdate(
             { questionId: questionNumber, mockInterviewId: mockId },
             { $set: updateFeedback },
-            { new: true, upsert: true } 
-            );
-
-          console.log(questionData);
+            { new: true, upsert: true }
+          );
 
           if (questionData) {
             await questionData.save();
