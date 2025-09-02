@@ -131,6 +131,12 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
                 currentQuestion ===
                 data?.InterviewQuestions.length - 1
               ) {
+                if(prompt.userAnswer.length==0 || prompt.userAnswer.length<10){
+                  toast({
+                    description: "You Did not Answered the Question",
+                  });
+                  fetchData(prompt);
+                }
                 navigate(`/interview/${data?.mockInterviewId}/feedback`);
               }
             }}
