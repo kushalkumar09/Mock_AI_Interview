@@ -7,18 +7,18 @@ import useFetchData from "@/hooks/Apihooks/useApiResponse"
 import ApiEndPoints from "@/constants/endpoint"
 import { useNavigate } from "react-router"
 const pastInterviews = [
-    { title: "Frontend Developer", date: "2023-10-01", your: 85, max: 100 },
-    { title: "Backend Developer", date: "2023-09-25", your: 90, max: 100 },
-    { title: "Fullstack Developer", date: "2023-09-20", your: 88, max: 100 },
-    { title: "Data Scientist", date: "2023-09-15", your: 92, max: 100 },
-    { title: "DevOps Engineer", date: "2023-09-10", your: 80, max: 100 },
-    { title: "Product Manager", date: "2023-09-05", your: 87, max: 100 },
-    { title: "UI/UX Designer", date: "2023-09-01", your: 91, max: 100 },];
+  { title: "Frontend Developer", date: "2023-10-01", your: 85, max: 100 },
+  { title: "Backend Developer", date: "2023-09-25", your: 90, max: 100 },
+  { title: "Fullstack Developer", date: "2023-09-20", your: 88, max: 100 },
+  { title: "Data Scientist", date: "2023-09-15", your: 92, max: 100 },
+  { title: "DevOps Engineer", date: "2023-09-10", your: 80, max: 100 },
+  { title: "Product Manager", date: "2023-09-05", your: 87, max: 100 },
+  { title: "UI/UX Designer", date: "2023-09-01", your: 91, max: 100 },];
 
 export function RecentTable() {
-  const {endPoint} = ApiEndPoints.GetPreviousInterviews;
-  const {data} = useFetchData(endPoint);
-  const [items,setItems] = useState(pastInterviews)
+  const { endPoint } = ApiEndPoints.GetPreviousInterviews;
+  const { data } = useFetchData(endPoint);
+  const [items, setItems] = useState(pastInterviews)
 
   const [pageSize, setPageSize] = useState(5)
   const [page, setPage] = useState(1)
@@ -43,21 +43,21 @@ export function RecentTable() {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
   }, [page, totalPages])
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(data)
-    if(data && data.data){
+    if (data && data.data) {
       const formattedData = data.data.map(interview => (
         console.log(interview?.InterviewScore?.userScore),
         {
-        title: interview.JobPosition || "N/A",
-        date: new Date(interview.updatedAt).toISOString().split('T')[0] || "N/A",
-        description: interview.JobDescription || "N/A",
-        your: interview?.InterviewScore?.userScore ?? 0,
-        max: interview?.InterviewScore?.maxScore ?? 10
-      }));
+          title: interview.JobPosition || "N/A",
+          date: new Date(interview.updatedAt).toISOString().split('T')[0] || "N/A",
+          description: interview.JobDescription || "N/A",
+          your: interview?.InterviewScore?.userScore ?? 0,
+          max: interview?.InterviewScore?.maxScore ?? 10
+        }));
       setItems(formattedData);
     }
-  },[data])
+  }, [data])
 
   return (
     <Card className="rounded-3xl border-white/5 bg-card/60 backdrop-blur">
@@ -89,7 +89,7 @@ export function RecentTable() {
       </CardHeader>
       <CardContent>
         <div className="overflow-hidden rounded-2xl border border-white/5">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-h-60">
             <thead className="bg-white/5 text-foreground/70">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Interview</th>
@@ -115,6 +115,13 @@ export function RecentTable() {
                   <td className="px-4 py-3">{row.max}</td>
                 </tr>
               ))}
+              {displayed.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="px-4 py-6 text-center text-sm text-foreground/50">
+                    No interviews found.
+                  </td>
+                </tr>
+              )}
             </tbody>
             {/* pagination */}
             <tfoot className="bg-white/5 text-foreground/70">
@@ -123,47 +130,47 @@ export function RecentTable() {
 
                   <div className="flex items-center justify-end gap-2">
                     <Button
-              variant="outline"
-              className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
-              onClick={() => goTo(1)}
-              disabled={page === 1}
-            >
-              <ChevronsLeft size={16} aria-hidden />
-            </Button>
-            <Button
-              variant="outline"
-              className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
-              onClick={() => goTo(page - 1)}
-              disabled={page === 1}
-            >
-              <ChevronLeft size={16} aria-hidden />
-            </Button>
-            {pageNumbers.map((pageNumber) => (
-              <Button
-                key={pageNumber}
-                variant="outline"
-                className={`rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10 ${pageNumber === page ? "bg-white/10" : ""}`}
-                onClick={() => goTo(pageNumber)}
-              >
-                {pageNumber}
-              </Button>
-            ))}
-            <Button
-              variant="outline"
-              className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
-              onClick={() => goTo(page + 1)}
-              disabled={page === totalPages}
-            >
-              <ChevronRight size={16} aria-hidden />
-            </Button>
-            <Button
-              variant="outline"
-              className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
-              onClick={() => goTo(totalPages)}
-              disabled={page === totalPages}
-            >
-              <ChevronsRight size={16} aria-hidden />
-            </Button>
+                      variant="outline"
+                      className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
+                      onClick={() => goTo(1)}
+                      disabled={page === 1}
+                    >
+                      <ChevronsLeft size={16} aria-hidden />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
+                      onClick={() => goTo(page - 1)}
+                      disabled={page === 1}
+                    >
+                      <ChevronLeft size={16} aria-hidden />
+                    </Button>
+                    {pageNumbers.map((pageNumber) => (
+                      <Button
+                        key={pageNumber}
+                        variant="outline"
+                        className={`rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10 ${pageNumber === page ? "bg-white/10" : ""}`}
+                        onClick={() => goTo(pageNumber)}
+                      >
+                        {pageNumber}
+                      </Button>
+                    ))}
+                    <Button
+                      variant="outline"
+                      className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
+                      onClick={() => goTo(page + 1)}
+                      disabled={page === totalPages}
+                    >
+                      <ChevronRight size={16} aria-hidden />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="rounded-xl border-white/10 bg-white/5 text-xs text-foreground hover:bg-white/10"
+                      onClick={() => goTo(totalPages)}
+                      disabled={page === totalPages}
+                    >
+                      <ChevronsRight size={16} aria-hidden />
+                    </Button>
                   </div>
                 </td>
               </tr>
