@@ -36,14 +36,14 @@ const FeedbackCard = ({
   index,
 }) => {
   const getScoreColor = (score) => {
-    if (score >= 4) return "text-success"
-    if (score >= 3) return "text-warning"
+    if (score >= 80) return "text-success"
+    if (score >= 40) return "text-warning"
     return "text-destructive"
   }
 
   const getScoreBg = (score) => {
-    if (score >= 4) return "bg-success/10 border-success/20"
-    if (score >= 3) return "bg-warning/10 border-warning/20"
+    if (score >= 80) return "bg-success/10 border-success/20"
+    if (score >= 40) return "bg-warning/10 border-warning/20"
     return "bg-destructive/10 border-destructive/20"
   }
 
@@ -57,13 +57,13 @@ const FeedbackCard = ({
                 Question {index + 1}
               </Badge>
               <Badge variant="secondary" className={`text-xs ${getScoreColor(rating)}`}>
-                {rating}/5
+                {rating}/100
               </Badge>
             </div>
             <h3 className="text-lg font-medium text-foreground mb-2">{question}</h3>
           </div>
           <div className="flex items-center gap-2">
-            {rating >= 3 ? (
+            {rating >= 40 ? (
               <CheckCircle className="w-5 h-5 text-success" />
             ) : (
               <XCircle className="w-5 h-5 text-destructive" />
@@ -126,13 +126,13 @@ const InterviewFeedback = () => {
   }
 
   const feedbackData = data.data
-  const score = feedbackData.filter((q) => q.rating >= 3).length
+  const score = feedbackData.filter((q) => q.rating >= 30).length
   const totalQuestions = feedbackData.length || 5
   const scorePercentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0
 
   const averageRating =
     feedbackData.length > 0 ? feedbackData.reduce((sum, q) => sum + q.rating, 0) / feedbackData.length : 0
-  const overallScore = Math.round((averageRating / 5) * 100)
+  const overallScore = Math.round((averageRating / 100) * 100)
 
   const strengths = feedbackData
     .filter((q) => q.rating >= 4)
@@ -237,7 +237,7 @@ const InterviewFeedback = () => {
                         <div className="text-sm text-muted-foreground">Questions</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-foreground">{averageRating.toFixed(1)}/5</div>
+                        <div className="text-2xl font-bold text-foreground">{averageRating.toFixed(1)}/100</div>
                         <div className="text-sm text-muted-foreground">Avg Rating</div>
                       </div>
                     </div>
