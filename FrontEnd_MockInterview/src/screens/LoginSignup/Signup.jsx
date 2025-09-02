@@ -1,6 +1,7 @@
 "use client"
 
 import { AuthEndPoints } from "@/constants/endpoint"
+import { AppContent } from "@/context/Appcontext"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router"
@@ -13,6 +14,7 @@ const Signup = () => {
   } = useForm()
   const navigate = useNavigate()
   const [apiError, setApiError] = useState("")
+  const {setIsLoggedIn,setCurrentUser} = useContext(AppContent);
 
   const onSubmit = async (data) => {
     setApiError("")
@@ -24,12 +26,15 @@ const Signup = () => {
         },
         body: JSON.stringify(data),
       })
-      console.log(signup)
 
       if (signup.ok) {
         const responseData = await signup.json()
-        localStorage.setItem("token", responseData.token)
-        navigate("/")
+        localStorage.setItem("token", responseData.token);
+        setCurrentUser(responseData.user);
+        localStorage.setItem("login", "true");
+        setIsLoggedIn(true);
+        
+        navigate("/dashboard")
       } else if (signup.status === 409) {
         const errorData = await signup.json().catch(() => ({ message: "User already exists." }))
         setApiError(errorData.message || "User already exists.")

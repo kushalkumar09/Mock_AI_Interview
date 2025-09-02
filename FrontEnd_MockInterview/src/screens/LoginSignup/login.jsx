@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn } = useContext(AppContent);
+  const { setIsLoggedIn , setCurrentUser} = useContext(AppContent);
   const [apiError, setApiError] = useState("");
   const {
     register,
@@ -36,6 +36,7 @@ const Login = () => {
         localStorage.setItem("token", result.token);
         localStorage.setItem("login", "true");
         setIsLoggedIn(true);
+        setCurrentUser(result.user);
 
         toast({
           title: "Login Successful!",

@@ -3,11 +3,15 @@
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Bell, Menu } from "lucide-react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Sidebar } from "./sidebar"
+import { useResolvedPath } from "react-router"
+import { AppContent } from "@/context/Appcontext"
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const path = useResolvedPath();
+  const {currentUser} = useContext(AppContent);
 
   return (
     <>
@@ -24,9 +28,9 @@ export function Header() {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="space-y-0.5">
-              <p className="text-xs uppercase tracking-widest text-foreground/60">Dashboard</p>
+              <h1 className="text-xs uppercase tracking-widest text-foreground/60">{path.pathname}</h1>
               <h1 className="text-lg font-semibold sm:text-xl">
-                Welcome back, <span className="text-primary">John</span>! <span aria-hidden>👋</span>
+                Welcome back, <span className="text-primary capitalize">{currentUser}</span>! <span aria-hidden>👋</span>
               </h1>
               <p className="text-sm text-foreground/60">Ready to ace your next interview?</p>
             </div>
@@ -40,7 +44,7 @@ export function Header() {
               <Bell className="h-5 w-5" />
             </Button>
             <Avatar>
-              <AvatarFallback>JS</AvatarFallback>
+              <AvatarFallback>{currentUser?.slice(0,2).toUpperCase()}</AvatarFallback>
             </Avatar>
           </div>
         </div>

@@ -33,6 +33,10 @@ const mockInterviewSchema = new mongoose.Schema(
         },
       },
     ],
+    InterviewScore:{
+      userScore:{type:Number,default:0},
+      maxScore:{type:Number,default:100}
+    }
   },
   { timestamps: true }
 );

@@ -26,7 +26,7 @@ export const userSignin = async (req, res) => {
     const token = generateToken(payload);
     return res
       .status(201)
-      .json({ message: "User created successfully", token });
+      .json({ message: "User created successfully", token ,user: payload.username});
   } catch (error) {
     return res.status(500).json({ message: "User creation failed" });
   }
@@ -50,7 +50,7 @@ export const userLogin = async (req, res) => {
     const token = generateToken(payload);
 
 
-    return res.status(200).json({ message: "Login successful" ,token});
+    return res.status(200).json({ message: "Login successful" ,token,user: payload.username});
   } catch (error) {
     return res.status(500).json({ message: "Login failed" });
   }
