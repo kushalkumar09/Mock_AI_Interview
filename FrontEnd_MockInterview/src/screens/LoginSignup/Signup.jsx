@@ -1,8 +1,8 @@
 "use client"
 
-import { AuthEndPoints } from "@/constants/endpoint"
-import { AppContent } from "@/context/Appcontext"
-import { useState } from "react"
+import { AuthEndPoints } from "@/constants/endpoint.js"
+import { AppContent } from "@/context/Appcontext.jsx"
+import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router"
 
