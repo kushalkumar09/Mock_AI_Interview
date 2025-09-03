@@ -23,6 +23,10 @@ const ApiEndPoints = {
         endPoint: `${backendUrl}/allInterviews`,
         method:"GET"
     },
+    UpdateInterviewScore:{
+        endPoint: `${backendUrl}/interview/:id/updateScore`,
+        method:"PATCH"
+    }
 }
 
 export const AuthEndPoints = {

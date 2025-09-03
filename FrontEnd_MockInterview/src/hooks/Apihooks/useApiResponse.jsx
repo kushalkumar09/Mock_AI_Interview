@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useFetchData = (endpoint) => {
+const useFetchData = (endpoint,search="") => {
   // States to track loading, data, and errors
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,10 @@ const useFetchData = (endpoint) => {
       setError(null); 
 
       try {
-        const response = await fetch(endpoint,{
+        const url = search
+          ? `${endpoint}?search=${encodeURIComponent(search)}`
+          : endpoint;
+        const response = await fetch(url,{
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -37,7 +40,7 @@ const useFetchData = (endpoint) => {
     };
 
     fetchData();
-  }, [endpoint]); // Rerun the effect if the endpoint changes
+  }, [endpoint,search]); // Rerun the effect if the endpoint changes
 
   return { data, loading, error };
 };

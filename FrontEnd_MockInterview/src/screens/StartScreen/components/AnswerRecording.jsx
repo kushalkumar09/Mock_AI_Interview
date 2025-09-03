@@ -20,6 +20,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
     questionNumber: currentQuestion,
   };
   const { endPoint, method } = ApiEndPoints?.AiFeedback;
+  const { endPoint: scoreEndPoint, method: scoreMethod } = ApiEndPoints?.UpdateInterviewScore
   const { fetchData } = usePromptResponse(endPoint, method);
   const {
     error,
@@ -32,6 +33,38 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
     continuous: true,
     useLegacyResults: false,
   });
+
+  const handleQuestionNavigation = async () => {
+    const totalQuestions = data?.InterviewQuestions.length;
+    if (currentQuestion < totalQuestions - 1) {
+      fetchData(prompt);
+      toast({ description: "You Did not Answer the Question" });
+      handleActiveQuestion(currentQuestion + 1);
+      return;
+    }
+    if (!prompt.userAnswer || prompt.userAnswer.length < 10) {
+      toast({ description: "You Did not Answer the Question" });
+      fetchData(prompt);
+    }
+    try {
+      const res = await fetch(scoreEndPoint.replace(":id", data?.mockInterviewId), {
+        method: scoreMethod,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const result = await res.json();
+      if (res.ok) {
+        console.log("Score updated:", result.data.InterviewScore.userScore);
+      } else {
+        console.error("Error updating score:", result.message);
+      }
+    } catch (error) {
+      console.error("Error calling score API:", error);
+    }
+    navigate(`/interview/${data?.mockInterviewId}/feedback`);
+  };
 
   useEffect(() => {
     if (results.length >0) {
@@ -120,26 +153,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
           <Button
             variant="danger"
             className={`${currentQuestion===data?.InterviewQuestions.length-1?"bg-red-600 text-white":"bg-blue-600 text-white"} `}
-            onClick={() => {
-              if (currentQuestion < data?.InterviewQuestions.length - 1) {
-                fetchData(prompt);
-                toast({
-                  description: "You Did not Answered the Question",
-                });
-                handleActiveQuestion(currentQuestion + 1);
-              } else if (
-                currentQuestion ===
-                data?.InterviewQuestions.length - 1
-              ) {
-                if(prompt.userAnswer.length==0 || prompt.userAnswer.length<10){
-                  toast({
-                    description: "You Did not Answered the Question",
-                  });
-                  fetchData(prompt);
-                }
-                navigate(`/interview/${data?.mockInterviewId}/feedback`);
-              }
-            }}
+            onClick={handleQuestionNavigation}
           >
             {(currentQuestion+1===data?.InterviewQuestions.length)?"End Interview":"Next Question"}
           </Button>

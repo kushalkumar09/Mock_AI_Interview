@@ -120,7 +120,6 @@ Candidate's Answer: ${userAnswer}`;
       const feedbackJson = await JSON.parse(
         rawFeedback.replace("```json", "").replace("```", "")
       );
-      console.log(feedbackJson);
       // Validate that the parsed response contains the required fields
       if (feedbackJson) {
         try {

@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: process.env.FRONTEND_URL ?? "http://localhost:3000", // Allow requests from React frontend
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH"], // Allowed HTTP methods
     credentials: true, // Allow cookies and other credentials
   })
 );

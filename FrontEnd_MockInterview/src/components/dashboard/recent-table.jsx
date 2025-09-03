@@ -3,9 +3,10 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Search } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
-import useFetchData from "@/hooks/Apihooks/useApiResponse"
-import ApiEndPoints from "@/constants/endpoint"
+import useFetchData from "@/hooks/Apihooks/useApiResponse.jsx"
+import ApiEndPoints from "@/constants/endpoint.js"
 import { useNavigate } from "react-router"
+import { useDebounce } from "@/hooks/OptimisationHooks/useDebounce.jsx"
 const pastInterviews = [
   { title: "Frontend Developer", date: "2023-10-01", your: 85, max: 100 },
   { title: "Backend Developer", date: "2023-09-25", your: 90, max: 100 },
@@ -17,8 +18,10 @@ const pastInterviews = [
 
 export function RecentTable() {
   const { endPoint } = ApiEndPoints.GetPreviousInterviews;
-  const { data } = useFetchData(endPoint);
-  const [items, setItems] = useState(pastInterviews)
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm, 500);
+  const { data } = useFetchData(endPoint,debouncedSearch);
+  const [items, setItems] = useState(pastInterviews);
 
   const [pageSize, setPageSize] = useState(5)
   const [page, setPage] = useState(1)
@@ -26,6 +29,12 @@ export function RecentTable() {
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
 
   const navigate = useNavigate();
+
+  const viewFeedback = (id) => {
+    return () => {
+      navigate(`/interview/${id}/feedback`);
+    };
+  }
 
   useEffect(() => {
     setPage((p) => Math.min(Math.max(1, p), totalPages))
@@ -50,6 +59,7 @@ export function RecentTable() {
         console.log(interview?.InterviewScore?.userScore),
         {
           title: interview.JobPosition || "N/A",
+          interviewId: interview.mockInterviewId,
           date: new Date(interview.updatedAt).toISOString().split('T')[0] || "N/A",
           description: interview.JobDescription || "N/A",
           your: interview?.InterviewScore?.userScore ?? 0,
@@ -75,6 +85,8 @@ export function RecentTable() {
                 className="w-full rounded-xl border-white/10 bg-white/5 pl-9 text-sm placeholder:text-foreground/50"
                 placeholder="Search"
                 aria-label="Search previous interviews"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <Button
@@ -100,7 +112,7 @@ export function RecentTable() {
             </thead>
             <tbody>
               {displayed.map((row, idx) => (
-                <tr key={idx} className="border-t border-white/5 hover:bg-white/5">
+                <tr key={idx} className="border-t border-white/5 hover:bg-white/5" onClick={viewFeedback(row.interviewId)}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="h-4 w-4 rounded-full bg-white/10" />

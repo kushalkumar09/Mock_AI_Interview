@@ -7,7 +7,6 @@ import { Link, NavLink, useNavigate, useResolvedPath } from "react-router"
 const nav = [
   { label: "Dashboard", href: "/dashboard", icon: Home },
   { label: "Results", href: "/analytics", icon: BarChart2 },
-  { label: "Customers", href: "/customers", icon: Users },
   { label: "Billing", href: "/billing", icon: Receipt },
 ]
 

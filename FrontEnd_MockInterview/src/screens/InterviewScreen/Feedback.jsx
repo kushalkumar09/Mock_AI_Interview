@@ -132,7 +132,7 @@ const InterviewFeedback = () => {
 
   const averageRating =
     feedbackData.length > 0 ? feedbackData.reduce((sum, q) => sum + q.rating, 0) / feedbackData.length : 0
-  const overallScore = Math.round((averageRating / 100) * 100)
+  const overallScore = Math.round((Math.floor(averageRating) / 100) * 100)
 
   const strengths = feedbackData
     .filter((q) => q.rating >= 4)
@@ -237,7 +237,7 @@ const InterviewFeedback = () => {
                         <div className="text-sm text-muted-foreground">Questions</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-foreground">{averageRating.toFixed(1)}/100</div>
+                        <div className="text-2xl font-bold text-foreground">{averageRating}/100</div>
                         <div className="text-sm text-muted-foreground">Avg Rating</div>
                       </div>
                     </div>
