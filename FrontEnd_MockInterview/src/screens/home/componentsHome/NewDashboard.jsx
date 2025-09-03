@@ -1,7 +1,5 @@
-
 import {Header} from "@/components/dashboard/header.jsx"
 import { OverviewCards } from "@/components/dashboard/overview.jsx"
-import { ActivityChart } from "@/components/dashboard/activity-chart.jsx"
 import { RecentTable } from "@/components/dashboard/recent-table.jsx"
 import { Sidebar } from "@/components/dashboard/sidebar.jsx"
 
