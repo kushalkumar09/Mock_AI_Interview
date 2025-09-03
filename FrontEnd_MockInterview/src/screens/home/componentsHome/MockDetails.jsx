@@ -21,10 +21,13 @@ const MockDetails = ({ onClose }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (response) {
+    if (response && Array.isArray(response) && response.length > 0) {
       setMockInterview(response)
-    }
-  }, [response])
+    } else if (error) {
+    // Clear old questions if an error happens
+    setMockInterview([]);
+  }
+  }, [response, error])
 
   useEffect(() => {
     const isFormValid =
@@ -117,6 +120,17 @@ const MockDetails = ({ onClose }) => {
               Cancel
             </Button>
           </div>
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">
+                {error.includes("overloaded")
+                  ? "Our AI service is currently overloaded. Please wait a moment and try again."
+                  : error.includes("Too many requests")
+                    ? "You are sending too many requests. Please slow down."
+                    : error}
+              </p>
+            </div>
+          )}
         </form>
 
         {mockInterview?.length > 0 && (
@@ -140,6 +154,11 @@ const MockDetails = ({ onClose }) => {
           </div>
         )}
       </div>
+      {/* {(error || fetchError) && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm">{error || fetchError}</p>
+            </div>
+          )} */}
     </div>
   )
 }

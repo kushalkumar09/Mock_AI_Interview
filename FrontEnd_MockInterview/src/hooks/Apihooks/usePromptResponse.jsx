@@ -20,11 +20,15 @@ export const usePromptResponse = (endpoint, method) => {
       });
 
       const data = await res.json();
+      if (!res.ok) {
+        setError(data.message || "Something went wrong");
+        return;
+      }
       setResponse(data?.data || "No data returned");
       setMockId(data?.mockId || "");
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError("Error fetching data");
+      setError("Network error. Please check your connection.");
     } finally {
       setLoading(false);
     }

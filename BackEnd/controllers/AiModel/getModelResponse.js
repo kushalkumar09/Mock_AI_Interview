@@ -10,28 +10,53 @@ export const getResponse = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized access" });
     }
     const { JobPosition, JobDescription, YearOfExperience } = req.body.prompt;
-    const userInput = `Job Position : ${JobPosition}, Job Description: ${JobDescription}, Year of experience:${YearOfExperience}. Depends on the information generate 5 Interview question and answer . generate question and answer as  json field in response example:[{question:ai generated question based on the given information from the user , answer:the answer user give}]`;
 
-    // Fetch the response from the chat session
-    const result = await chatSession.sendMessage(userInput);
+    if (!JobPosition || !JobDescription || !YearOfExperience) {
+      return res.status(400).json({ message: "Missing required fields." });
+    }
+
+    const userInput = `Job Position: ${JobPosition}, Job Description: ${JobDescription}, Year of experience: ${YearOfExperience}.
+    Based on this information generate 5 interview question and answer pairs in JSON format:
+    Example: [{"question": "AI-generated question", "answer": "expected user answer"}]`;
+
+    let result;
+    try {
+      result = await chatSession.sendMessage(userInput);
+    } catch (apiError) {
+      console.error("Gemini API Error:", apiError);
+
+      if (apiError.message.includes("503")) {
+        return res.status(503).json({ message: "AI model is overloaded. Please try again later." });
+      }
+      if (apiError.message.includes("429")) {
+        return res.status(429).json({ message: "Too many requests. Please slow down." });
+      }
+
+      return res.status(500).json({ message: "Error communicating with AI service.", error: apiError.message });
+    }
 
     // Validate and process the chat response
     if (result?.response?.text) {
       try {
-        // Parse the JSON response from the chat model
         const rawResponse = result.response.text();
-        const mockJsonResponse = JSON.parse(
-          rawResponse.replace("```json", "").replace("```", "")
-        );
+        const cleanResponse = rawResponse.replace(/```json|```/g, "").trim();
 
-        // Validate that the parsed response contains valid data
-        if (!Array.isArray(mockJsonResponse) || mockJsonResponse.length === 0) {
-          return res
-            .status(400)
-            .json({ message: "Invalid interview questions data." });
+        let mockJsonResponse;
+        try {
+          mockJsonResponse = JSON.parse(cleanResponse);
+        } catch (parseError) {
+          console.error("JSON Parse Error:", parseError, "Raw:", rawResponse);
+          return res.status(400).json({
+            message: "AI returned invalid JSON. Please try again.",
+            error: parseError.message,
+          });
         }
 
-        // Create and save the mock interview in the database
+        if (!Array.isArray(mockJsonResponse) || mockJsonResponse.length === 0) {
+          return res.status(400).json({ message: "AI did not generate valid interview questions." });
+        }
+
+        // Save the interview in DB
         const newMockInterview = new MockInterview({
           mockInterviewId: uniqid(),
           userId: userData.id,
@@ -43,14 +68,12 @@ export const getResponse = async (req, res) => {
 
         const savedInterview = await newMockInterview.save();
 
-        // Respond with the mock interview questions
         return res.status(200).json({
           message: "Mock Interview saved successfully!",
           data: mockJsonResponse,
           mockId: savedInterview.mockInterviewId,
         });
       } catch (saveError) {
-        // Handle errors related to saving the mock interview
         console.error("Error saving Mock Interview:", saveError);
         return res.status(500).json({
           message: "Error saving Mock Interview to the database.",
@@ -58,14 +81,10 @@ export const getResponse = async (req, res) => {
         });
       }
     } else {
-      // Handle cases where the chat response is invalid or missing
-      return res
-        .status(404)
-        .json({ message: "No valid response from the chat model." });
+      return res.status(404).json({ message: "No valid response from the AI model." });
     }
   } catch (error) {
-    // Handle any other errors that occur during processing
-    console.error("Error processing request:", error.message);
+    console.error("Server Error:", error.message);
     return res.status(500).json({
       message: "An error occurred while processing your request.",
       error: error.message,
