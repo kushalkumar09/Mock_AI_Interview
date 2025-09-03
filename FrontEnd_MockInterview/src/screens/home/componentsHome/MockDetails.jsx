@@ -85,12 +85,6 @@ const MockDetails = ({ onClose }) => {
             </div>
           ))}
 
-          {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm">{error}</p>
-            </div>
-          )}
-
           <div className="flex gap-3 pt-2">
             <Button
             variant="outline"
