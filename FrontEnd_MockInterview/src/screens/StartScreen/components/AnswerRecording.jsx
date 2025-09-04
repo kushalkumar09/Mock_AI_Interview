@@ -63,7 +63,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
     // Navigate forward
     if (currentQuestion < totalQuestions - 1) {
       if (!useranswer || useranswer.length < 10) {
-        toast({ description: "Please provide a longer answer before moving on.",position: "top-right",transition: Bounce });
+        toast({ description: "Please provide a longer answer before moving on."});
         return;
       }
       fetchData(prompt);
@@ -177,7 +177,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
             variant="outline"
             className="bg-yellow-500 text-white"
             onClick={() => {
-              toast({ description: "You skipped this question.", position: "top-right" });
+              toast({ description: "You skipped this question.", });
               fetchData(prompt);
               handleActiveQuestion(currentQuestion + 1);
             }}
