@@ -13,6 +13,7 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
   const [recording, setRecording] = useState(true);
   const [useranswer, setUserAnswer] = useState("");
   const [isRecording, setIsRecording] = useState(false);
+  const [savingFeedback, setSavingFeedback] = useState(false);
   const navigate = useNavigate();
 
   const prompt = {
@@ -58,26 +59,25 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
       setIsRecording(false);
     }
 
-    const totalQuestions = data?.InterviewQuestions.length;
-
-    // Navigate forward
-    if (currentQuestion < totalQuestions - 1) {
-      if (!useranswer || useranswer.length < 10) {
-        toast({ description: "Please provide a longer answer before moving on."});
-        return;
-      }
-      fetchData(prompt);
-      handleActiveQuestion(currentQuestion + 1);
+    if (!useranswer || useranswer.length < 10) {
+      toast({ description: "Please provide a longer answer before moving on." });
       return;
     }
 
-    // Last question check
-    if (!prompt.userAnswer || prompt.userAnswer.length < 10) {
-      toast({ description: "Your last answer is too short." });
-      fetchData(prompt);
-    }
-
     try {
+      setSavingFeedback(true); // start saving feedback
+      await fetchData(prompt);  // wait until feedback is saved
+      setSavingFeedback(false); // done saving
+
+      const totalQuestions = data?.InterviewQuestions.length;
+
+      // Navigate forward
+      if (currentQuestion < totalQuestions - 1) {
+        handleActiveQuestion(currentQuestion + 1);
+        return;
+      }
+
+      // Last question: update score
       const res = await fetch(scoreEndPoint.replace(":id", data?.mockInterviewId), {
         method: scoreMethod,
         headers: {
@@ -91,19 +91,23 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
       } else {
         console.error("Error updating score:", result.message);
       }
+
+      navigate(`/interview/${data?.mockInterviewId}/feedback`);
     } catch (error) {
-      console.error("Error calling score API:", error);
+      setSavingFeedback(false);
+      console.error("Error saving feedback:", error);
+      toast({ description: "Failed to save feedback. Please try again." });
     }
-    navigate(`/interview/${data?.mockInterviewId}/feedback`);
   };
 
-  const saveUserAnswer = () => {
+
+  const saveUserAnswer = async() => {
     if (isRecording) {
       stopListening();
       setIsRecording(false);
 
       if (useranswer && useranswer.length > 10) {
-        fetchData(prompt);
+        const savingFeedback = await fetchData(prompt);
         toast({ description: "Your Answer is saved" });
       } else {
         toast({ description: "Answer too short, not saved" });
@@ -113,6 +117,50 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
       setIsRecording(true);
     }
   };
+
+  const handleSkipQuestion = async () => {
+  if (isRecording) {
+    stopListening();
+    setIsRecording(false);
+  }
+
+  try {
+    setSavingFeedback(true);
+
+    // Save feedback for skipped question
+    await fetchData(prompt);
+
+    const totalQuestions = data?.InterviewQuestions.length;
+
+    if (currentQuestion < totalQuestions - 1) {
+      toast({ description: "You skipped this question." });
+      handleActiveQuestion(currentQuestion + 1);
+    } else {
+      // Last question: update score
+      const res = await fetch(scoreEndPoint.replace(":id", data?.mockInterviewId), {
+        method: scoreMethod,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const result = await res.json();
+      if (res.ok) {
+        console.log("Score updated:", result.data.InterviewScore.userScore);
+      } else {
+        console.error("Error updating score:", result.message);
+      }
+      toast({ description: "Skipped last question, feedback saved." });
+      navigate(`/interview/${data?.mockInterviewId}/feedback`);
+    }
+  } catch (error) {
+    console.error("Error saving skipped feedback:", error);
+    toast({ description: "Failed to save skipped feedback. Please try again." });
+  } finally {
+    setSavingFeedback(false);
+  }
+};
+
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -176,16 +224,13 @@ const AnswerRecording = ({ data, currentQuestion, handleActiveQuestion }) => {
           <Button
             variant="outline"
             className="bg-yellow-500 text-white"
-            onClick={() => {
-              toast({ description: "You skipped this question.", });
-              fetchData(prompt);
-              handleActiveQuestion(currentQuestion + 1);
-            }}
+            onClick={handleSkipQuestion}
           >
             Skip Question
           </Button>
           <Button
             variant="danger"
+            disabled={savingFeedback}
             className={`${
               currentQuestion === data?.InterviewQuestions.length - 1
                 ? "bg-red-600 text-white"
