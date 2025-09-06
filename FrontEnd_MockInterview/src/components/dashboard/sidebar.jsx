@@ -19,7 +19,7 @@ export function Sidebar() {
     window.location.href = "";    
   };
   return (
-    <nav className="h-screen sticky top-0 p-4 md:p-6 flex flex-col gap-3 rounded-r-2xl bg-gradient-to-b from-gray-600 to-gray-600 text-white">
+    <nav className="h-screen sticky top-0 p-4 md:p-6 flex flex-col gap-3 rounded-r-2xl bg-[#1B3C53] text-white">
       {/* Brand */}
       <div className="mb-2 flex items-center gap-3 px-2">
         <div className="grid h-8 w-8 place-items-center rounded-lg bg-background font-semibold">S</div>
